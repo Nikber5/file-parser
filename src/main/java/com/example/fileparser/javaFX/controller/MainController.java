@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -42,7 +42,7 @@ public class MainController {
     private final FileChooser fileChooser;
 
     @FXML
-    private AnchorPane anchorPane;
+    private VBox vBox;
     @FXML
     private Label firstPathLabel;
     @FXML
@@ -57,6 +57,8 @@ public class MainController {
     private TextArea secondTextArea;
     @FXML
     private Button saveButton;
+    @FXML
+    private Button executeButton;
     @FXML
     private TableView<Entity> table;
 
@@ -116,10 +118,15 @@ public class MainController {
         }
     }
 
+    public void execute(ActionEvent actionEvent) {
+        saveButton.setVisible(true);
+    }
+
     private void handleFile(Label pathLabel, TextArea textArea) {
         Window window = getWindow();
         File file = fileChooser.showOpenDialog(window);
         if (file != null) {
+            fileChooser.setInitialDirectory(file.getParentFile());
             List<String> lines = readerService.readSmallFile(file);
             List<Entity> entities = lines.stream()
                     .map(entityMapper::mapToModel)
@@ -133,7 +140,7 @@ public class MainController {
     }
 
     private Window getWindow() {
-        return anchorPane.getScene().getWindow();
+        return vBox.getScene().getWindow();
     }
 
     private void getTable(ObservableList<Entity> entities) {
@@ -159,6 +166,5 @@ public class MainController {
 
         table.setItems(entities);
         table.setVisible(true);
-
     }
 }

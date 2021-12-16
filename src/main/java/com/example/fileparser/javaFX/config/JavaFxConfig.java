@@ -9,6 +9,11 @@ public class JavaFxConfig {
     @Bean
     public FileChooser getFileChooser() {
         FileChooser fileChooser = new FileChooser();
-        return new FileChooser();
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        FileChooser.ExtensionFilter anyFilter = new FileChooser.ExtensionFilter("Any files", "*.*");
+        fileChooser.getExtensionFilters().add(csvFilter);
+        fileChooser.getExtensionFilters().add(anyFilter);
+        fileChooser.setSelectedExtensionFilter(csvFilter);
+        return fileChooser;
     }
 }
