@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fileparser.javaFX.controller.MainController">
+   <stylesheets>
+      <URL value="@styles.css" />
+   </stylesheets>
+   <children>
+      <Label fx:id="firstPathLabel" layoutX="38.0" layoutY="40.0" prefHeight="17.0" prefWidth="300.0" styleClass="path-label" text="Please choose the first file" />
+      <Button fx:id="firstFileChooserButton" layoutX="365.0" layoutY="36.0" mnemonicParsing="false" onAction="#chooseFirstFile" prefHeight="25.0" prefWidth="93.0" text="Open" />
+      <Label fx:id="secondPathLabel" layoutX="38.0" layoutY="191.0" prefHeight="17.0" prefWidth="300.0" styleClass="path-label" text="Please choose the second file" />
+      <Button fx:id="secondFileChooserButton" layoutX="365.0" layoutY="188.0" mnemonicParsing="false" onAction="#chooseSecondFile" prefHeight="25.0" prefWidth="93.0" text="Open" />
+      <Label />
+      <TextArea fx:id="firstTextArea" layoutX="38.0" layoutY="70.0" prefHeight="82.0" prefWidth="300.0" />
+      <TextArea fx:id="secondTextArea" layoutX="38.0" layoutY="224.0" prefHeight="101.0" prefWidth="300.0" />
+      <TableView fx:id="table" layoutX="39.0" layoutY="386.0" prefHeight="163.0" prefWidth="526.0" visible="false"> </TableView>
+      <Button layoutX="44.0" layoutY="346.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" text="Do the thing" />
+      <Button fx:id="saveButton" layoutX="386.0" layoutY="346.0" mnemonicParsing="false" text="Save" onAction="#saveReport" />
+   </children>
+</AnchorPane>
