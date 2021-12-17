@@ -1,26 +1,23 @@
 package com.example.fileparser.javaFX.controller;
 
-import com.example.fileparser.mapper.EntityMapper;
-import com.example.fileparser.model.Entity;
-import com.example.fileparser.service.ReaderService;
+import com.example.fileparser.model.CrmEntity;
+import com.example.fileparser.model.TransactionRecord;
+import com.example.fileparser.service.TableService;
 import com.example.fileparser.service.WriterService;
+import com.example.fileparser.service.handler.FileHandler;
+import com.example.fileparser.service.strategy.FileStrategy;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -30,99 +27,75 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView("main-stage.fxml")
 public class MainController implements Initializable {
-    private final ReaderService readerService;
+    private final TableService tableService;
+    private final FileStrategy fileStrategy;
     private final WriterService writerService;
-    private final EntityMapper entityMapper;
     private final FileChooser fileChooser;
 
     @FXML
     private VBox vBox;
     @FXML
-    private Label firstPathLabel;
+    private Label transactionPathLabel;
     @FXML
-    private Button firstFileChooserButton;
+    private Button transactionFileChooserButton;
     @FXML
-    private Label secondPathLabel;
+    private Label crmPathLabel;
     @FXML
-    private Button secondFileChooserButton;
+    private Button crmFileChooserButton;
     @FXML
-    private TableView<Entity> firstTableView;
+    private TableView<TransactionRecord> transactionTable;
     @FXML
-    private TableView<Entity> secondTableView;
+    private TableView<CrmEntity> crmTable;
     @FXML
     private Button saveButton;
     @FXML
     private Button executeButton;
     @FXML
-    private TableView<Entity> table;
+    private TableView table;
 
-    public MainController(ReaderService readerService, WriterService writerService,
-                          EntityMapper entityMapper, FileChooser fileChooser) {
-        this.readerService = readerService;
+    public MainController(TableService tableService, FileStrategy fileStrategy,
+                          WriterService writerService, FileChooser fileChooser) {
+        this.tableService = tableService;
+        this.fileStrategy = fileStrategy;
         this.writerService = writerService;
-        this.entityMapper = entityMapper;
         this.fileChooser = fileChooser;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tuneEntityTable(table);
-        tuneEntityTable(firstTableView);
-        tuneEntityTable(secondTableView);
+        tableService.tuneTransactionRecordTable(transactionTable);
+        tableService.tuneCrmEntityTable(crmTable);
     }
 
-    public void chooseFirstFile(ActionEvent actionEvent) {
-        handleFile(firstPathLabel, firstTableView);
+    public void chooseTransactionFile(ActionEvent actionEvent) {
+        FileHandler<TransactionRecord> handler = fileStrategy.getHandler(TransactionRecord.class);
+        File file = getFile(transactionPathLabel);
+        List<TransactionRecord> transactionRecords = handler.getEntitiesFromFile(file);
+        populateTable(transactionTable, FXCollections.observableList(transactionRecords));
+
     }
 
-    public void chooseSecondFile(ActionEvent actionEvent) {
-        handleFile(secondPathLabel, secondTableView);
+    public void chooseCrmFile(ActionEvent actionEvent) {
+        getFile(crmPathLabel);
     }
 
     public void saveReport(ActionEvent actionEvent) {
-        ObservableList<Entity> firstItems = firstTableView.getItems();
-        ObservableList<Entity> secondItems = secondTableView.getItems();
-        if (firstItems == null || firstItems.isEmpty() || secondItems == null || secondItems.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Both files have to be defined");
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    System.out.println("Button was pressed");
-                }
-            });
-            return;
-        }
 
-        File file = fileChooser.showSaveDialog(getWindow());
-        if (file != null) {
-            saveTextToFile("Saved content", file);
-        }
     }
 
     public void execute(ActionEvent actionEvent) {
-        ObservableList<Entity> firstItems = firstTableView.getItems();
-        ObservableList<Entity> secondItems = secondTableView.getItems();
-        table.setItems(firstItems);
-        table.getItems().addAll(secondItems);
-        saveButton.setVisible(true);
-        table.setVisible(true);
+
     }
 
-    private void saveTextToFile(String savedContent, File file) {
-        writerService.writeToFile(file.toPath(), List.of(savedContent));
-    }
-
-    private void handleFile(Label pathLabel, TableView<Entity> table) {
+    private File getFile(Label pathLabel) {
         Window window = getWindow();
         File file = fileChooser.showOpenDialog(window);
         if (file != null) {
             fileChooser.setInitialDirectory(file.getParentFile());
-            List<String> lines = readerService.readSmallFile(file);
-            List<Entity> entities = lines.stream()
-                    .map(entityMapper::mapToModel)
-                    .collect(Collectors.toList());
             pathLabel.setText(file.getAbsolutePath());
-
-            populateTable(table, FXCollections.observableList(entities));
+            return file;
+        } else {
+            throw new RuntimeException("No such file");
         }
     }
 
@@ -130,29 +103,7 @@ public class MainController implements Initializable {
         return vBox.getScene().getWindow();
     }
 
-    private void populateTable(TableView<Entity> table, ObservableList<Entity> entities) {
+    private <T> void populateTable(TableView<T> table, ObservableList<T> entities) {
         table.setItems(entities);
-    }
-
-    private void tuneEntityTable(TableView<Entity> tableView) {
-        TableColumn<Entity, String> firstColumn = new TableColumn<>("First value");
-        firstColumn.setCellValueFactory(new PropertyValueFactory<>("first"));
-        tableView.getColumns().add(firstColumn);
-
-        TableColumn<Entity, String> secondColumn = new TableColumn<>("Second value");
-        secondColumn.setCellValueFactory(new PropertyValueFactory<>("second"));
-        tableView.getColumns().add(secondColumn);
-
-        TableColumn<Entity, String> thirdColumn = new TableColumn<>("Third value");
-        thirdColumn.setCellValueFactory(new PropertyValueFactory<>("third"));
-        tableView.getColumns().add(thirdColumn);
-
-        TableColumn<Entity, String> fourthColumn = new TableColumn<>("Fourth value");
-        fourthColumn.setCellValueFactory(new PropertyValueFactory<>("fourth"));
-        tableView.getColumns().add(fourthColumn);
-
-        TableColumn<Entity, String> fifthColumn = new TableColumn<>("Fifth value");
-        fifthColumn.setCellValueFactory(new PropertyValueFactory<>("fifth"));
-        tableView.getColumns().add(fifthColumn);
     }
 }
