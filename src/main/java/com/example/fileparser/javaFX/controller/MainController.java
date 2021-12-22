@@ -1,7 +1,9 @@
 package com.example.fileparser.javaFX.controller;
 
 import com.example.fileparser.model.CrmEntity;
+import com.example.fileparser.model.ResultEntity;
 import com.example.fileparser.model.TransactionRecord;
+import com.example.fileparser.service.ResultService;
 import com.example.fileparser.service.TableService;
 import com.example.fileparser.service.WriterService;
 import com.example.fileparser.service.handler.FileHandler;
@@ -11,9 +13,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -31,6 +36,7 @@ public class MainController implements Initializable {
 
     private final TableService tableService;
     private final FileHandler fileHandler;
+    private final ResultService resultService;
     private final WriterService writerService;
     private final FileChooser fileChooser;
 
@@ -55,13 +61,14 @@ public class MainController implements Initializable {
     @FXML
     private Button executeButton;
     @FXML
-    private TableView resultTable;
+    private TableView<ResultEntity> resultTable;
 
     public MainController(ExecutorService executorService, TableService tableService, FileHandler fileHandler,
-                          WriterService writerService, FileChooser fileChooser) {
+                          ResultService resultService, WriterService writerService, FileChooser fileChooser) {
         this.executorService = executorService;
         this.tableService = tableService;
         this.fileHandler = fileHandler;
+        this.resultService = resultService;
         this.writerService = writerService;
         this.fileChooser = fileChooser;
     }
@@ -70,6 +77,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableService.tuneTable(transactionTable, TransactionRecord.class);
         tableService.tuneTable(crmTable, CrmEntity.class);
+        tableService.tuneTable(resultTable, ResultEntity.class);
     }
 
     @PreDestroy
@@ -86,11 +94,24 @@ public class MainController implements Initializable {
         handleFile(crmPathLabel, crmTable, crmProgressIndicator, CrmEntity.class);
     }
 
-    public void saveReport(ActionEvent actionEvent) {
-
+    public void execute(ActionEvent actionEvent) {
+        ObservableList<TransactionRecord> transactionRecords = transactionTable.getItems();
+        ObservableList<CrmEntity> crmEntities = crmTable.getItems();
+        if (transactionRecords.isEmpty() || crmEntities.isEmpty()) {
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("No file");
+            errorAlert.setContentText("Both files have to be chosen");
+            errorAlert.showAndWait();
+            return;
+        }
+        List<ResultEntity> resultList = resultService.getResult(transactionRecords, crmEntities);
+        resultTable.setItems(FXCollections.observableList(resultList));
+        resultTable.setPrefHeight(300.0);
+        resultTable.setPrefWidth(1075.0);
+        resultTable.setVisible(true);
     }
 
-    public void execute(ActionEvent actionEvent) {
+    public void saveReport(ActionEvent actionEvent) {
 
     }
 

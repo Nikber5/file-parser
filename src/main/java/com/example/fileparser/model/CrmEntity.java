@@ -30,6 +30,14 @@ public class CrmEntity {
         this.anotherEmail = anotherEmail;
     }
 
+    public Long getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Long tableId) {
+        this.tableId = tableId;
+    }
+
     public Long getId() {
         return id;
     }

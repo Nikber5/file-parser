@@ -1,6 +1,7 @@
 package com.example.fileparser.service;
 
 import com.example.fileparser.model.CrmEntity;
+import com.example.fileparser.model.ResultEntity;
 import com.example.fileparser.model.TransactionRecord;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,6 +21,8 @@ public class TableServiceImpl implements TableService {
             titleFieldMap = getCrmEntityProperties();
         } else if (clazz.equals(TransactionRecord.class)) {
             titleFieldMap = getTransactionRecordProperties();
+        } else if (clazz.equals(ResultEntity.class)) {
+            titleFieldMap = getResultProperties();
         }
 
         if (titleFieldMap != null) {
@@ -49,6 +52,34 @@ public class TableServiceImpl implements TableService {
 
     private Map<String, String> getCrmEntityProperties() {
         Map<String, String> titleFieldMap = new LinkedHashMap<>();
+        titleFieldMap.put("#", "tableId");
+        titleFieldMap.put("ID", "id");
+        titleFieldMap.put("Полное имя контакта", "contactFullName");
+        titleFieldMap.put("Рабочий телефон", "workPhone");
+        titleFieldMap.put("Рабочий прямой телефон", "workDirectPhone");
+        titleFieldMap.put("Мобильный телефон", "mobilePhone");
+        titleFieldMap.put("Домашний телефон", "homePhone");
+        titleFieldMap.put("Другой телефон", "anotherPhone");
+        titleFieldMap.put("Рабочий email", "workEmail");
+        titleFieldMap.put("Личный email", "personalEmail");
+        titleFieldMap.put("Другой email", "anotherEmail");
+        return titleFieldMap;
+    }
+
+    private Map<String, String> getResultProperties() {
+        Map<String, String> titleFieldMap = new LinkedHashMap<>();
+        titleFieldMap.put("# from transaction", "transactionalTableId");
+        titleFieldMap.put("Имя клиента", "clientName");
+        titleFieldMap.put("Телефон", "phoneNumber");
+        titleFieldMap.put("Email", "email");
+        titleFieldMap.put("Товары", "goods");
+        titleFieldMap.put("Сумма", "sumOfPayment");
+        titleFieldMap.put("Время платежа", "timeOfPayment");
+        titleFieldMap.put("Способ оплаты", "paymentMethod");
+        titleFieldMap.put("Владелец карты", "cardOwner");
+        titleFieldMap.put("Страна Клиента", "clientCountry");
+        titleFieldMap.put("Фамилия клиента", "clientSurname");
+        titleFieldMap.put("# from CRM", "tableId");
         titleFieldMap.put("ID", "id");
         titleFieldMap.put("Полное имя контакта", "contactFullName");
         titleFieldMap.put("Рабочий телефон", "workPhone");
