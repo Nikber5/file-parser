@@ -34,6 +34,8 @@ public class JavaFxApplication extends Application {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(MainController.class);
         Scene scene = new Scene(root);
+        stage.setTitle("File parser");
+        stage.setMinHeight(400.0);
         stage.setScene(scene);
         stage.show();
     }

@@ -2,6 +2,7 @@ package com.example.fileparser.model;
 
 //ID,"Полное имя контакта", "Рабочий телефон","Рабочий прямой телефон","Мобильный телефон","Домашний телефон","Другой телефон","Рабочий email","Личный email","Другой email"
 public class CrmEntity {
+    private Long tableId;
     private Long id;
     private String contactFullName;
     private String workPhone;
@@ -12,6 +13,22 @@ public class CrmEntity {
     private String workEmail;
     private String personalEmail;
     private String anotherEmail;
+
+    public CrmEntity(Long tableId, Long id, String contactFullName, String workPhone, String workDirectPhone,
+                     String mobilePhone, String homePhone, String anotherPhone, String workEmail,
+                     String personalEmail, String anotherEmail) {
+        this.tableId = tableId;
+        this.id = id;
+        this.contactFullName = contactFullName;
+        this.workPhone = workPhone;
+        this.workDirectPhone = workDirectPhone;
+        this.mobilePhone = mobilePhone;
+        this.homePhone = homePhone;
+        this.anotherPhone = anotherPhone;
+        this.workEmail = workEmail;
+        this.personalEmail = personalEmail;
+        this.anotherEmail = anotherEmail;
+    }
 
     public Long getId() {
         return id;
@@ -91,5 +108,21 @@ public class CrmEntity {
 
     public void setAnotherEmail(String anotherEmail) {
         this.anotherEmail = anotherEmail;
+    }
+
+    @Override
+    public String toString() {
+        return "CrmEntity{" +
+                "id=" + id +
+                ", contactFullName='" + contactFullName + '\'' +
+                ", workPhone='" + workPhone + '\'' +
+                ", workDirectPhone='" + workDirectPhone + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", anotherPhone='" + anotherPhone + '\'' +
+                ", workEmail='" + workEmail + '\'' +
+                ", personalEmail='" + personalEmail + '\'' +
+                ", anotherEmail='" + anotherEmail + '\'' +
+                '}';
     }
 }

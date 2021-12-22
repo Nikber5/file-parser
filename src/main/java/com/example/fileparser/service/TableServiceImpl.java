@@ -2,6 +2,7 @@ package com.example.fileparser.service;
 
 import com.example.fileparser.model.CrmEntity;
 import com.example.fileparser.model.TransactionRecord;
+import com.example.fileparser.util.CsvUtil;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javafx.scene.control.SelectionMode;
@@ -16,7 +17,7 @@ public class TableServiceImpl implements TableService {
     public void tuneTransactionRecordTable(TableView<TransactionRecord> table) {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        TableColumn<TransactionRecord, String> idColumn = new TableColumn<>("ID");
+        TableColumn<TransactionRecord, String> idColumn = new TableColumn<>("#");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         TableColumn<TransactionRecord, String> clientNameColumn = new TableColumn<>("Имя клиента");
