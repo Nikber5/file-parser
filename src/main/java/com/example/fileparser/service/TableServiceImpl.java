@@ -79,7 +79,7 @@ public class TableServiceImpl implements TableService {
         titleFieldMap.put("Владелец карты", "cardOwner");
         titleFieldMap.put("Страна Клиента", "clientCountry");
         titleFieldMap.put("Фамилия клиента", "clientSurname");
-        titleFieldMap.put("# from CRM", "tableId");
+        titleFieldMap.put("# from CRM", "crmTableId");
         titleFieldMap.put("ID", "id");
         titleFieldMap.put("Полное имя контакта", "contactFullName");
         titleFieldMap.put("Рабочий телефон", "workPhone");
