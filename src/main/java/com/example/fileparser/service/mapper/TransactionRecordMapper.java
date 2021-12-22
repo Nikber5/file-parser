@@ -1,11 +1,11 @@
-package com.example.fileparser.mapper;
+package com.example.fileparser.service.mapper;
 
 import com.example.fileparser.model.TransactionRecord;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("transactionRecordMapper")
 public class TransactionRecordMapper implements Mapper<TransactionRecord> {
     private static final String TRANSACTION_RECORD_SEPARATOR = ";";
 
@@ -26,5 +26,10 @@ public class TransactionRecordMapper implements Mapper<TransactionRecord> {
     @Override
     public List<String> toStrings(List<TransactionRecord> entities) {
         return null;
+    }
+
+    @Override
+    public Class<TransactionRecord> getType() {
+        return TransactionRecord.class;
     }
 }

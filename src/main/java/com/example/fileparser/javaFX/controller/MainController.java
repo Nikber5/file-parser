@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @FxmlView("main-stage.fxml")
 public class MainController implements Initializable {
     private final TableService tableService;
-    private final FileStrategy fileStrategy;
+    private final FileHandler fileHandler;
     private final WriterService writerService;
     private final FileChooser fileChooser;
 
@@ -51,12 +51,12 @@ public class MainController implements Initializable {
     @FXML
     private Button executeButton;
     @FXML
-    private TableView table;
+    private TableView resultTable;
 
-    public MainController(TableService tableService, FileStrategy fileStrategy,
+    public MainController(TableService tableService, FileHandler fileHandler,
                           WriterService writerService, FileChooser fileChooser) {
         this.tableService = tableService;
-        this.fileStrategy = fileStrategy;
+        this.fileHandler = fileHandler;
         this.writerService = writerService;
         this.fileChooser = fileChooser;
     }
@@ -68,15 +68,12 @@ public class MainController implements Initializable {
     }
 
     public void chooseTransactionFile(ActionEvent actionEvent) {
-        FileHandler<TransactionRecord> handler = fileStrategy.getHandler(TransactionRecord.class);
-        File file = getFile(transactionPathLabel);
-        List<TransactionRecord> transactionRecords = handler.getEntitiesFromFile(file);
-        populateTable(transactionTable, FXCollections.observableList(transactionRecords));
+        handleFile(transactionPathLabel, transactionTable, TransactionRecord.class);
 
     }
 
     public void chooseCrmFile(ActionEvent actionEvent) {
-        getFile(crmPathLabel);
+        handleFile(crmPathLabel, crmTable, CrmEntity.class);
     }
 
     public void saveReport(ActionEvent actionEvent) {
@@ -85,6 +82,12 @@ public class MainController implements Initializable {
 
     public void execute(ActionEvent actionEvent) {
 
+    }
+
+    private <T> void handleFile(Label label, TableView<T> table, Class<T> clazz) {
+        File file = getFile(label);
+        List<T> entities = fileHandler.getEntitiesFromFile(file, clazz);
+        populateTable(table, FXCollections.observableList(entities));
     }
 
     private File getFile(Label pathLabel) {

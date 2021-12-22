@@ -26,7 +26,7 @@
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveReport" text="Save" visible="false" />
          </children>
       </HBox>
-      <TableView fx:id="table" prefHeight="180.0" prefWidth="526.0" visible="false">
+      <TableView fx:id="resultTable" prefHeight="180.0" prefWidth="526.0" visible="false">
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" />
          </VBox.margin>
