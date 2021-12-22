@@ -1,6 +1,8 @@
 package com.example.fileparser.javaFX.config;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.stage.FileChooser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +21,10 @@ public class JavaFxConfig {
         fileChooser.setSelectedExtensionFilter(csvFilter);
         fileChooser.setInitialDirectory(new File("D:\\test-files"));
         return fileChooser;
+    }
+
+    @Bean
+    public ExecutorService getExecutorService() {
+        return Executors.newFixedThreadPool(4);
     }
 }
