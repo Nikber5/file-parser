@@ -68,8 +68,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tableService.tuneTransactionRecordTable(transactionTable);
-        tableService.tuneCrmEntityTable(crmTable);
+        tableService.tuneTable(transactionTable, TransactionRecord.class);
+        tableService.tuneTable(crmTable, CrmEntity.class);
     }
 
     @PreDestroy
