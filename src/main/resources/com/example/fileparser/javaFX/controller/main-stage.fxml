@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fileparser.javaFX.controller.MainController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fileparser.javaFX.controller.MainController">
     <VBox prefHeight="845.0" prefWidth="1115.0" spacing="10.0">
         <children>
             <Label prefHeight="17.0" prefWidth="183.0" text="Transaction file:">
@@ -20,7 +20,10 @@
                <ProgressIndicator fx:id="transactionProgressIndicator" visible="false" />
                 </children>
             </HBox>
-            <TableView fx:id="transactionTable" prefHeight="300.0" prefWidth="1075.0" />
+            <TableView fx:id="transactionTable" prefHeight="300.0" prefWidth="1075.0">
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy></TableView>
             <Label prefHeight="17.0" prefWidth="220.0" text="CRM file:">
             <font>
                <Font size="14.0" />
@@ -32,7 +35,10 @@
                <ProgressIndicator fx:id="crmProgressIndicator" visible="false" />
                 </children>
             </HBox>
-            <TableView fx:id="crmTable" prefHeight="300.0" prefWidth="1075.0" />
+            <TableView fx:id="crmTable" prefHeight="300.0" prefWidth="1075.0">
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy></TableView>
             <HBox spacing="20.0">
                 <children>
                     <Button fx:id="executeButton" mnemonicParsing="false" onAction="#execute" prefHeight="25.0" prefWidth="102.0" text="Execute" />
