@@ -68,6 +68,7 @@ public class TableServiceImpl implements TableService {
 
     private Map<String, String> getResultProperties() {
         Map<String, String> titleFieldMap = new LinkedHashMap<>();
+        titleFieldMap.put("#", "id");
         titleFieldMap.put("# from transaction", "transactionalTableId");
         titleFieldMap.put("Имя клиента", "clientName");
         titleFieldMap.put("Телефон", "phoneNumber");
@@ -80,7 +81,7 @@ public class TableServiceImpl implements TableService {
         titleFieldMap.put("Страна Клиента", "clientCountry");
         titleFieldMap.put("Фамилия клиента", "clientSurname");
         titleFieldMap.put("# from CRM", "crmTableId");
-        titleFieldMap.put("ID", "id");
+        titleFieldMap.put("CRM ID", "crmId");
         titleFieldMap.put("Полное имя контакта", "contactFullName");
         titleFieldMap.put("Рабочий телефон", "workPhone");
         titleFieldMap.put("Рабочий прямой телефон", "workDirectPhone");

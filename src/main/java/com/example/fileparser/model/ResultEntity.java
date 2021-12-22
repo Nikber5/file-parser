@@ -1,6 +1,8 @@
 package com.example.fileparser.model;
 
 public class ResultEntity {
+    private Long id;
+
     private Long transactionalTableId;
     private String clientName;
     private String phoneNumber;
@@ -14,7 +16,7 @@ public class ResultEntity {
     private String clientSurname;
 
     private Long crmTableId;
-    private Long id;
+    private Long crmId;
     private String contactFullName;
     private String workPhone;
     private String workDirectPhone;
@@ -25,12 +27,13 @@ public class ResultEntity {
     private String personalEmail;
     private String anotherEmail;
 
-    public ResultEntity(Long transactionalTableId, String clientName, String phoneNumber, String email,
-                        String goods, String sumOfPayment, String timeOfPayment, String paymentMethod,
-                        String cardOwner, String clientCountry, String clientSurname, Long crmTableId,
-                        Long id, String contactFullName, String workPhone, String workDirectPhone,
-                        String mobilePhone, String homePhone, String anotherPhone, String workEmail,
-                        String personalEmail, String anotherEmail) {
+    public ResultEntity(Long id, Long transactionalTableId, String clientName, String phoneNumber,
+                        String email, String goods, String sumOfPayment, String timeOfPayment,
+                        String paymentMethod, String cardOwner, String clientCountry, String clientSurname,
+                        Long crmTableId, Long crmId, String contactFullName, String workPhone,
+                        String workDirectPhone, String mobilePhone, String homePhone, String anotherPhone,
+                        String workEmail, String personalEmail, String anotherEmail) {
+        this.id = id;
         this.transactionalTableId = transactionalTableId;
         this.clientName = clientName;
         this.phoneNumber = phoneNumber;
@@ -43,7 +46,7 @@ public class ResultEntity {
         this.clientCountry = clientCountry;
         this.clientSurname = clientSurname;
         this.crmTableId = crmTableId;
-        this.id = id;
+        this.crmId = crmId;
         this.contactFullName = contactFullName;
         this.workPhone = workPhone;
         this.workDirectPhone = workDirectPhone;
@@ -53,6 +56,14 @@ public class ResultEntity {
         this.workEmail = workEmail;
         this.personalEmail = personalEmail;
         this.anotherEmail = anotherEmail;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getTransactionalTableId() {
@@ -151,12 +162,12 @@ public class ResultEntity {
         this.crmTableId = crmTableId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getCrmId() {
+        return crmId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCrmId(Long crmId) {
+        this.crmId = crmId;
     }
 
     public String getContactFullName() {
@@ -246,7 +257,7 @@ public class ResultEntity {
                 ", clientCountry='" + clientCountry + '\'' +
                 ", clientSurname='" + clientSurname + '\'' +
                 ", crmTableId=" + crmTableId +
-                ", id=" + id +
+                ", id=" + crmId +
                 ", contactFullName='" + contactFullName + '\'' +
                 ", workPhone='" + workPhone + '\'' +
                 ", workDirectPhone='" + workDirectPhone + '\'' +

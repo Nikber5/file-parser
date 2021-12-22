@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ResultServiceImpl implements ResultService {
+    private int resultNumber;
     @Override
     public List<ResultEntity> getResult(List<TransactionRecord> transactionRecords, List<CrmEntity> crmEntities) {
+        resultNumber = 0;
         crmEntities = crmEntities.stream().peek(c -> c.setWorkPhone(validatePhone(c.getWorkPhone())))
                 .peek(c -> c.setWorkDirectPhone(validatePhone(c.getWorkDirectPhone())))
                 .peek(c -> c.setMobilePhone(validatePhone(c.getMobilePhone())))
@@ -27,14 +29,16 @@ public class ResultServiceImpl implements ResultService {
     }
 
     private ResultEntity mapToResult(TransactionRecord record) {
-        return new ResultEntity(record.getId(), record.getClientName(), record.getPhoneNumber(), record.getEmail(),
+        resultNumber++;
+        return new ResultEntity((long) resultNumber, record.getId(), record.getClientName(), record.getPhoneNumber(), record.getEmail(),
                 record.getGoods(), record.getSumOfPayment(), record.getTimeOfPayment(), record.getPaymentMethod(), record.getCardOwner(),
                 record.getClientCountry(), record.getClientSurname(), null, null, null, null, null,
                 null, null, null, null, null, null);
     }
 
     private ResultEntity mapToResult(CrmEntity entity) {
-        return new ResultEntity(null, null,null, null,
+        resultNumber++;
+        return new ResultEntity((long) resultNumber, null, null,null, null,
                 null, null, null, null, null,
                 null, null, entity.getTableId(), entity.getId(), entity.getContactFullName(),
                 entity.getWorkPhone(), entity.getWorkDirectPhone(), entity.getMobilePhone(), entity.getHomePhone(),
